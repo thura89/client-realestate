@@ -5,11 +5,14 @@ import { BiMenuAltRight } from "react-icons/bi";
 import OutsideClickHandler from "react-outside-click-handler";
 import useHeaderColor from "../../hooks/useHeaderColor";
 import { getMenuStyles } from "../../utils/Common";
-import { Link, NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { useAuth0 } from "@auth0/auth0-react";
+import ProfileMenu from "../ProfileMenu/ProfileMenu";
 
 const Header = () => {
   const [menuOpened, setMenuOpened] = useState(false);
   const headerColor = useHeaderColor();
+  const { loginWithRedirect, isAuthenticated, logout, user } = useAuth0();
 
   return (
     <section className="h-wrapper" style={{ background: headerColor }}>
@@ -32,9 +35,14 @@ const Header = () => {
           >
             <Link to={"/properties"}> Properties</Link>
             <a href="#contact-us">Contact Us</a>
-            <button className="button">
-              <a href="mailto:thurasan27189@gmail.com">Login</a>
-            </button>
+
+            {!isAuthenticated ? (
+              <button className="button" onClick={loginWithRedirect}>
+                Login
+              </button>
+            ) : (
+              <ProfileMenu logout={logout} user={user} />
+            )}
           </div>
         </OutsideClickHandler>
 

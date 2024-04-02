@@ -29,7 +29,7 @@ export const getProperty = async (id) => {
     if (response.status === 400 || response.status === 500) {
       throw response.data;
     }
-    return response.data;
+    return response.data.data;
   } catch (error) {
     toast.error(error.message);
     throw new Error(error.message);
